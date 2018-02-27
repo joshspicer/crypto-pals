@@ -79,7 +79,7 @@ class Result:
 		return self
 
 def frequencyInEnglish(char):
-	return frequency.get(char, 0)
+	return frequency.get(char.lower(), 0)
 
 def smartSingleByteXOR(input):
 	arr = []
@@ -164,32 +164,22 @@ def editDistance(str1, str2):
 
 
 def theThreeMostLikelyKeySizes(input):
-	mostLikelySizes = []
-	for size in range(2, 40):
-		firstSample = input[0:size]
-		secondSample = input[size+1:(2*size+1)]
-		editD = editDistance(firstSample, secondSample) / size
-		# Cover case where we don't have three options yet
-		if (len(mostLikelySizes) != 3):
-			mostLikelySizes.append(editD)
-			mostLikelySizes.sort()
-		for curr in range(0, len(mostLikelySizes)):
-			if (mostLikelySizes[len(mostLikelySizes) - curr - 1] > editD):
-				mostLikelySizes[len(mostLikelySizes) - curr - 1] = editD
-				break
-		mostLikelySizes.sort()
+	distances = []
+	for KEYSIZE in range(2,40):
+		first =  input[ : KEYSIZE]
+		second = input[KEYSIZE : KEYSIZE * 2]
+		third =  input[KEYSIZE * 2 : KEYSIZE * 3]
+		fourth = input[KEYSIZE * 3 : KEYSIZE * 4]
+		normalized = float(editDistance(first, second) + editDistance(second, third) + editDistance(third,fourth)) / (KEYSIZE * 3)
+		distances.append((KEYSIZE, normalized))
+	return map(lambda x: x[0], sorted(distances, key=lambda tup:tup[1])[:3])
 	
-	return mostLikelySizes
-
-	
-#breakRepeatedXOR(input):
-#	KEYSIZES = theThreeMostLikelyKeySizes(input)
 
 fileSix = ''
 with open('6.txt', 'r') as myfile:
-    fileSix=myfile.read().replace('\n', '')
+    fileSix=myfile.read().replace('\n', '').decode('base64')
 
-# print theThreeMostLikelyKeySizes(fileSix.decode('base64'))
+#print theThreeMostLikelyKeySizes(fileSix.decode('base64'))
 
 
 def breakIntoBlocksOfSizeN(theFile, n):
