@@ -1,4 +1,5 @@
 import sys
+from Crypto.Cipher import AES
 
 def tobits(s):
     result = []
@@ -219,6 +220,34 @@ def breakRepeatKeyXOR(input, keySizes):
 	return finalArr
 
 
-keys =  breakRepeatKeyXOR(fileSix,theThreeMostLikelyKeySizes(fileSix))
-print keys
-print repeatedXOR(fileSix, keys[2])
+#keys =  breakRepeatKeyXOR(fileSix,theThreeMostLikelyKeySizes(fileSix))
+#print keys
+#print repeatedXOR(fileSix, keys[2])
+
+
+# END 6
+
+# START 7
+
+with open('7.txt', 'r') as myfile:
+    fileSeven=myfile.read().replace('\n', '').decode('base64')
+
+
+sevenKey = b'YELLOW SUBMARINE'
+aesKey = AES.new(sevenKey, AES.MODE_ECB)
+print aesKey.decrypt(fileSeven)
+
+# END 7
+
+# START 8
+
+# ....
+
+
+
+
+
+
+
+
+
