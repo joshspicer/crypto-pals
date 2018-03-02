@@ -30,7 +30,7 @@ def singleByteXOR(input, key):
 # challenge2 end #
 
 frequency = {
-' ': 13,
+' ': 20,
 'e': 12.02,
 't': 9.10,
 'a': 8.12,
@@ -83,7 +83,7 @@ def frequencyInEnglish(char):
 
 def smartSingleByteXOR(input):
 	arr = []
-	options='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+	options='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 +-:;'
 	for key in options:
 		score = 0
 		result = singleByteXOR(input, key)
@@ -179,50 +179,46 @@ fileSix = ''
 with open('6.txt', 'r') as myfile:
     fileSix=myfile.read().replace('\n', '').decode('base64')
 
-#print theThreeMostLikelyKeySizes(fileSix.decode('base64'))
+#print theThreeMostLikelyKeySizes(fileSix)
 
+alphabetTestInput = 'abcdefghijklmnopqrstuvwxyz'
 
 def breakIntoBlocksOfSizeN(theFile, n):
 	output = []
-	for i in range(0, len(theFile), n):
+	for i in range(0, len(theFile)+1, n):
+		#print "from: " + str(i) + " to: " + str(i+n-1) + "\n"
 		output.append(theFile[i:i+n]) 
 	return output
 
 
-testBrokenBlocks = breakIntoBlocksOfSizeN(fileSix, 5)	
+#testBrokenBlocks = breakIntoBlocksOfSizeN(fileSix, 29)
+#print testBrokenBlocks
 
 def transposeBlocks(blocks, n):
 	# Create array of empty strings, one for each tranposed string
-	output = []
-	for i in range(0,n):
-		output.append('')
+	output = [''] * n
 	# Start sifting bits from each block into correct string	
 	for b in blocks:
 		for whichBucket in range(0,len(b)):
+			#print "len is: " + str(len(b))
 			output[whichBucket] += b[whichBucket]
 	return output
 
+#print transposeBlocks(testBrokenBlocks, 29)
 
 
-#print transposeBlocks(testBrokenBlocks, 5)
-		
-def breakRepeatKeyXOR(input):
-	output = []
-	KEYSIZE = theThreeMostLikelyKeySizes(input)
-	transposedOptions = []
-	for k in KEYSIZE:
-		transposedOptions = transposeBlocks(breakIntoBlocksOfSizeN(input, k), k)
-	# Start solving
-	for t in transposedOptions:
-		output.append(smartSingleByteXOR(t)[-1])
-	return output
+def breakRepeatKeyXOR(input, keySizes):
+	finalArr=[]
+	for KEYSIZE in keySizes:
+		finalString = ""
+		transposed = transposeBlocks(breakIntoBlocksOfSizeN(input, KEYSIZE), KEYSIZE)
+		for t in transposed:
+			finalString += smartSingleByteXOR(t)[-1].key
+		finalArr.append(finalString)
+	
+	return finalArr
 
 
-
-
-for item in breakRepeatKeyXOR(fileSix):
-	print item.printObject()
-
-
-
-
+keys =  breakRepeatKeyXOR(fileSix,theThreeMostLikelyKeySizes(fileSix))
+print keys
+print repeatedXOR(fileSix, keys[2])
