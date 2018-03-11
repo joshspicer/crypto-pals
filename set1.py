@@ -75,7 +75,7 @@ class Result:
 
 	def printObject(self):
 		print('Key: ' + self.key + " Score: " + str(self.score) + " Phrase: " + str(self.result) + "\n")
-	
+
 	def __iter__(self):
 		return self
 
@@ -94,7 +94,7 @@ def smartSingleByteXOR(input):
 		arr.append(Result(int(100*(float(score)/float(len(result)))), key, result))
 	# Return sorted list
 	arr.sort()
-	return arr 
+	return arr
 
 
 challengeThreeString='1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'.decode('hex')
@@ -147,7 +147,7 @@ def repeatedXOR(inputText, key):
 
 # challenge 5 done #
 
-# challenge 6 start #			
+# challenge 6 start #
 
 c6example1 = 'this is a test'
 c6example2 = 'wokka wokka!!!'
@@ -174,7 +174,7 @@ def theThreeMostLikelyKeySizes(input):
 		normalized = float(editDistance(first, second) + editDistance(second, third) + editDistance(third,fourth)) / (KEYSIZE * 3)
 		distances.append((KEYSIZE, normalized))
 	return map(lambda x: x[0], sorted(distances, key=lambda tup:tup[1])[:3])
-	
+
 
 fileSix = ''
 with open('6.txt', 'r') as myfile:
@@ -188,7 +188,7 @@ def breakIntoBlocksOfSizeN(theFile, n):
 	output = []
 	for i in range(0, len(theFile)+1, n):
 		#print "from: " + str(i) + " to: " + str(i+n-1) + "\n"
-		output.append(theFile[i:i+n]) 
+		output.append(theFile[i:i+n])
 	return output
 
 
@@ -198,7 +198,7 @@ def breakIntoBlocksOfSizeN(theFile, n):
 def transposeBlocks(blocks, n):
 	# Create array of empty strings, one for each tranposed string
 	output = [''] * n
-	# Start sifting bits from each block into correct string	
+	# Start sifting bits from each block into correct string
 	for b in blocks:
 		for whichBucket in range(0,len(b)):
 			#print "len is: " + str(len(b))
@@ -216,7 +216,7 @@ def breakRepeatKeyXOR(input, keySizes):
 		for t in transposed:
 			finalString += smartSingleByteXOR(t)[-1].key
 		finalArr.append(finalString)
-	
+
 	return finalArr
 
 
@@ -235,18 +235,43 @@ with open('7.txt', 'r') as myfile:
 
 sevenKey = b'YELLOW SUBMARINE'
 aesKey = AES.new(sevenKey, AES.MODE_ECB)
-print aesKey.decrypt(fileSeven)
+#print aesKey.decrypt(fileSeven)
 
 # END 7
 
 # START 8
 
-# ....
+fileEightArray = []
+with open('8.txt', 'r') as myfile:
+    fileEight=myfile.read()
+fileEight = fileEight.split('\n')
+fileEightArray =  map(lambda x: x.decode('hex'), fileEight)
+
+#print fileEightArray
 
 
+## Detect whether ANY blocks of 16 bytes
 
+def howManyUniqueBlocks(arr):
+    frequencies = []
+    for item in arr:
+        frequency = {}
+        splitByBytes = [item[i:i+16] for i in range(0, len(item), 16)]
+        for bytes in splitByBytes:
+            if bytes in frequency:
+                frequency[bytes] += 1
+                print item.encode('hex') # FOR THIS CHALLENGE, the only
+                                         # sequence of bytes > 1 is the answer!!
+            else:
+                frequency[bytes] = 1
 
-
+#data = ['\x00\x00\x00\x00\x00\x00', '\x00\x00\x00\x00\x00\x00']
+howManyUniqueBlocks(fileEightArray)
+# d880619740a8a19b7840a8a31c810a3d08649af70dc06f4fd5d2d69c744cd283e2dd0
+# 52f6b641dbf9d11b0348542bb5708649af70dc06f4fd5d2d69c744cd2839475c9dfdbc1d46
+# 597949d9c7e82bf5a08649af70dc06f4fd5d2d69c744cd28397a93eab8d6aecd56648915478
+# 9a6b0308649af70dc06f4fd5d2d69c744cd283d403180c98c8f6db1f2a3f9c4040deb0ab51b29
+# 933f2c123c58386b06fba186a
 
 
 
