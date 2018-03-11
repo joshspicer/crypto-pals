@@ -264,6 +264,8 @@ def howManyUniqueBlocks(arr):
                                          # sequence of bytes > 1 is the answer!!
             else:
                 frequency[bytes] = 1
+        # Could do further analysis here, but we print the answer above.
+
 
 #data = ['\x00\x00\x00\x00\x00\x00', '\x00\x00\x00\x00\x00\x00']
 howManyUniqueBlocks(fileEightArray)
@@ -275,4 +277,4 @@ howManyUniqueBlocks(fileEightArray)
 
 
 
-
+## set 1 end
