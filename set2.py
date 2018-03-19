@@ -19,3 +19,9 @@ def pkcs7Padding(blockLength, msg):
 
 
 print pkcs7Padding(20, bytearray("YELLOW SUBMARINE")) #"YELLOW SUBMARINE\x04\x04\x04\x04"
+
+# end 9 
+
+# start 10
+
+
